@@ -14,7 +14,7 @@
 $db = new SQLite3($_SERVER['HOME'] . '/.local/share/hamster-applet/hamster.db');
 
 // Select data.
-$results = $db->query("SELECT *, (SELECT name from fact_tags ft LEFT JOIN tags t ON (ft.tag_id=t.id) WHERE fact_id=f.id) as tags
+$results = $db->query("SELECT *, (SELECT GROUP_CONCAT(name, '#') from fact_tags ft LEFT JOIN tags t ON (ft.tag_id=t.id) WHERE fact_id=f.id GROUP BY ft.fact_id) as tags
   FROM facts f
     LEFT JOIN activities a ON (a.id=f.activity_id)
     WHERE start_time LIKE  '2016-03-%'
